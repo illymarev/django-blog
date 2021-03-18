@@ -4,12 +4,13 @@
     {% for object in object_list %}
         <div class="col-12">
         <img src="{{ object.image.url }}" width="240" height="300" alt="">
-        {{ object.title }}
-        {{ object.description }}
-        {{ object.author }}
+        <p>Title: {{ object.title }}</p>
+            <p>Description: {{ object.description }}</p>
+            <p>Post by: {{ object.author }}</p>
+        <h1> Comments: </h1>
         {% for comment in object.comments.all %}
-        {{ comment.author }}
-            {{ comment.text }}</div>
+        <p>{{ comment.author }} writes: </p>
+            <p>{{ comment.text }}</p><p></p></div>
         {% endfor %}
         {% if user.is_authenticated %}
         <button type="button"><a href="{% url 'blog:create-comment' pk=object.id %}">Write comment</a></button>
