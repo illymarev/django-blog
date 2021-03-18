@@ -1,13 +1,23 @@
 {% extends 'base.html' %}
 {% block body_block %}
+    <button type="button"><a href="{% url 'blog:create-post' %}">Create a new post</a></button>
     {% for object in object_list %}
         <div class="col-12">
         <img src="{{ object.image.url }}" width="240" height="300" alt="">
         {{ object.title }}
         {{ object.description }}
-        {{ object.author }}</div>
+        {{ object.author }}
+        {% for comment in object.comments.all %}
+        {{ comment.author }}
+            {{ comment.text }}</div>
+        {% endfor %}
+        {% if user.is_authenticated %}
         <button type="button"><a href="{% url 'blog:update-post' pk=object.id %}">Update post</a></button>
+        <button type="button"><a href="{% url 'blog:create-comment' pk=object.id %}">Write comment</a></button>
+            {% else %}
+            <h1>Log in to update post or write comments</h1>
+        {% endif %} 
+
     {% endfor %}
-    <button type="button"><a href="{% url 'blog:create-post' %}">Create a new post</a></button>
 
 {% endblock %}

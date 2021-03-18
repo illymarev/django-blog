@@ -1,11 +1,11 @@
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, DeleteView
 from django.views.generic.edit import UpdateView
 from django.contrib.auth import get_user_model
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
-from .models import Post
-from .forms import CreateUser, CreatePost
+from .models import Post, Comment
+from .forms import CreateUser, CreatePost, CreateComment
 
 
 # Create your views here.
@@ -20,14 +20,19 @@ class UserRegistrationView(CreateView):
 
         return super().form_valid(form)
 
-class MyLoginView(SuccessMessageMixin ,LoginView):
+
+class MyLoginView(SuccessMessageMixin, LoginView):
     template_name = 'blog/login.html'
-    success_url = reverse_lazy('blog:feed')
     success_message = 'Successful login'
+
+class MyLogoutView(SuccessMessageMixin, LogoutView):
+    success_message = 'Successful logout'
+
 
 class PostFeedView(ListView):
     model = Post
     template_name = 'blog/feed.html'
+
 
 class CreatePostView(CreateView):
     form_class = CreatePost
@@ -41,8 +46,24 @@ class CreatePostView(CreateView):
         post.save()
         return super().form_valid(form)
 
+
 class UpdatePostView(UpdateView):
     model = Post
     fields = ['title', 'description', 'image']
     template_name = 'blog/updatepost.html'
     success_url = reverse_lazy('blog:feed')
+
+
+class CreateCommentView(CreateView):
+    model = Comment
+    form_class = CreateComment
+    template_name = 'blog/createcomment.html'
+    success_url = reverse_lazy('blog:feed')
+
+    def form_valid(self, form, commit=True):
+        comment = form.save(commit=False)
+        comment.author = self.request.user
+        comment.post = self.get_object()
+        comment.save()
+        return super().form_valid(form)
+
