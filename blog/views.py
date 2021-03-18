@@ -63,7 +63,7 @@ class CreateCommentView(CreateView):
     def form_valid(self, form, commit=True):
         comment = form.save(commit=False)
         comment.author = self.request.user
-        comment.post = self.get_object()
+        comment.post_id = self.kwargs['pk']
         comment.save()
         return super().form_valid(form)
 
