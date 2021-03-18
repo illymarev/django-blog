@@ -67,3 +67,8 @@ class CreateCommentView(CreateView):
         comment.save()
         return super().form_valid(form)
 
+class DeletePostView(DeleteView, SuccessMessageMixin):
+    model = Post
+    success_url = reverse_lazy('blog:feed')
+    success_message = 'Post deleted'
+    template_name = 'blog/deletepost.html'

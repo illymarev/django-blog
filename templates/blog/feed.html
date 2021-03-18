@@ -17,6 +17,9 @@
             {% else %}
             <h1>Log in to update post or write comments</h1>
         {% endif %} 
+        {% if user.is_superuser %}
+        <button type="button"><a href="{% url 'blog:delete-post' pk=object.id %}">Delete post</a></button>
+        {% endif %} 
 
     {% endfor %}
 
