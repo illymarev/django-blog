@@ -1,0 +1,12 @@
+from django.urls import path
+from . import views
+
+app_name = 'blog'
+
+urlpatterns = [
+    path('register/', views.UserRegistrationView.as_view(), name='registration'),
+    path('login/', views.MyLoginView.as_view(), name='login'),
+    path('', views.PostFeedView.as_view(), name='feed'),
+    path('createpost', views.CreatePostView.as_view(), name='create-post'),
+    path('updatepost/<int:pk>', views.UpdatePostView.as_view(), name='update-post'),
+]

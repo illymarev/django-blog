@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block body_block %}
+    {% for object in object_list %}
+        <div class="col-12">
+        <img src="{{ object.image.url }}" width="240" height="300" alt="">
+        {{ object.title }}
+        {{ object.description }}
+        {{ object.author }}</div>
+        <button type="button"><a href="{% url 'blog:update-post' pk=object.id %}">Update post</a></button>
+    {% endfor %}
+    <button type="button"><a href="{% url 'blog:create-post' %}">Create a new post</a></button>
+
+{% endblock %}
