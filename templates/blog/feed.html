@@ -3,26 +3,31 @@
     <button type="button"><a href="{% url 'blog:create-post' %}">Create a new post</a></button>
     {% for object in object_list %}
         <div class="col-12">
-        <img src="{{ object.image.url }}" width="240" height="300" alt="">
-        <p>Title: {{ object.title }}</p>
+            <img src="{{ object.image.url }}" width="240" height="300" alt="">
+            <p>Title: {{ object.title }}</p>
             <p>Description: {{ object.description }}</p>
             <p>Post by: {{ object.author }}</p>
-        <h1> Comments: </h1>
-        {% for comment in object.comments.all %}
-        <p>{{ comment.author }} writes: </p>
-            <p>{{ comment.text }}</p><p></p></div>
-        {% endfor %}
-        {% if user.is_authenticated %}
-        <button type="button"><a href="{% url 'blog:create-comment' pk=object.id %}">Write comment</a></button>
+            <h3> Comments: </h3>
+            {% if object.comments.all %}
+                {% for comment in object.comments.all %}
+                    <p>{{ comment.author }} writes: </p>
+                    <p>{{ comment.text }}</p><p></p></div>
+                {% endfor %}
             {% else %}
+                <p>No comments yet!</p>
+            {% endif %}
+
+        {% if user.is_authenticated %}
+            <button type="button"><a href="{% url 'blog:create-comment' pk=object.id %}">Write comment</a></button>
+        {% else %}
             <h1>Log in to write comments</h1>
         {% endif %}
         {% if user == object.author %}
             <button type="button"><a href="{% url 'blog:update-post' pk=object.id %}">Update post</a></button>
         {% endif %}
         {% if user.is_superuser %}
-        <button type="button"><a href="{% url 'blog:delete-post' pk=object.id %}">Delete post</a></button>
-        {% endif %} 
+            <button type="button"><a href="{% url 'blog:delete-post' pk=object.id %}">Delete post</a></button>
+        {% endif %}
 
     {% endfor %}
 
