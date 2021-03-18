@@ -13,7 +13,6 @@ class PostAdmin(admin.ModelAdmin):
     inlines = [
         CommentInline
     ]
-    
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
